@@ -1,0 +1,106 @@
+# Ignore Visual Studio temporary files, build results, and user-specific files
+
+
+## Build directories
+
+[Bb]in/
+
+[Oo]bj/
+
+out/
+
+build/
+
+Debug/
+
+Release/
+
+
+## Visual Studio user-specific files
+
+*.user
+
+*.userosscache
+
+*.suo
+
+*.sdf
+
+*.cache
+
+*.VC.db
+
+*.VC.VC.opendb
+
+
+## CMake (if used)
+
+CMakeFiles/
+
+CMakeCache.txt
+
+cmake_install.cmake
+
+Makefile
+
+
+## Compiled files
+
+*.exe
+
+*.dll
+
+*.lib
+
+*.pdb
+
+*.ilk
+
+*.idb
+
+*.iobj
+
+*.ipdb
+
+
+## Logs
+
+*.log
+
+
+## Auto-generated files
+
+*.tlog
+
+*.lastbuildstate
+
+
+## Visual Studio Code (optional, if you use VS Code)
+
+.vscode/
+.vs/
+
+## Others
+
+*.ncb
+
+*.aps
+
+*.pch
+
+
+# Ignore backup or temp files
+
+*~
+
+*.tmp
+
+*.bak
+
+
+# Ignore hidden system files (macOS/Windows)
+
+.DS_Store
+
+Thumbs.db
+
