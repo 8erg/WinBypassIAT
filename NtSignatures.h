@@ -3,12 +3,32 @@
 #include <winternl.h>
 #include <Windows.h>
 
+#define NT_SUCCESS(Status) (((NTSTATUS)(Status)) >= 0)
+
 typedef struct _UNICODE_STRING
 {
     USHORT Length;
     USHORT MaximumLength;
     _Field_size_bytes_part_opt_(MaximumLength, Length) PWCH Buffer;
 } UNICODE_STRING, * PUNICODE_STRING;
+
+typedef struct _CLIENT_ID
+{
+    HANDLE UniqueProcess;
+    HANDLE UniqueThread;
+} CLIENT_ID, * PCLIENT_ID;
+
+typedef struct _INITIAL_TEB
+{
+    struct
+    {
+        PVOID OldStackBase;
+        PVOID OldStackLimit;
+    } OldInitialTeb;
+    PVOID StackBase;
+    PVOID StackLimit;
+    PVOID StackAllocationBase;
+} INITIAL_TEB, * PINITIAL_TEB;
 
 typedef struct _PS_ATTRIBUTE
 {
@@ -37,17 +57,27 @@ typedef struct _OBJECT_ATTRIBUTES
     HANDLE RootDirectory;
     PCUNICODE_STRING ObjectName;
     ULONG Attributes;
-    PVOID SecurityDescriptor; // PSECURITY_DESCRIPTOR;
-    PVOID SecurityQualityOfService; // PSECURITY_QUALITY_OF_SERVICE
+    PVOID SecurityDescriptor; 
+    PVOID SecurityQualityOfService; 
 } OBJECT_ATTRIBUTES, * POBJECT_ATTRIBUTES;
 
 typedef NTSTATUS(NTAPI* NtAllocateVirtualMemory)(
-    HANDLE    ProcessHandle,
-    PVOID* BaseAddress,
-    ULONG_PTR ZeroBits,
-    PSIZE_T   RegionSize,
-    ULONG     AllocationType,
-    ULONG     Protect
+    _In_ HANDLE ProcessHandle,
+    _Inout_ _At_(*BaseAddress, _Readable_bytes_(*RegionSize) _Writable_bytes_(*RegionSize) _Post_readable_byte_size_(*RegionSize)) PVOID* BaseAddress,
+    _In_ ULONG_PTR ZeroBits,
+    _Inout_ PSIZE_T RegionSize,
+    _In_ ULONG AllocationType,
+    _In_ ULONG PageProtection
+    );
+
+typedef NTSTATUS(NTAPI* NtAllocateVirtualMemoryEx)(
+    _In_ HANDLE ProcessHandle,
+    _Inout_ _At_(*BaseAddress, _Readable_bytes_(*RegionSize) _Writable_bytes_(*RegionSize) _Post_readable_byte_size_(*RegionSize)) PVOID* BaseAddress,
+    _Inout_ PSIZE_T RegionSize,
+    _In_ ULONG AllocationType,
+    _In_ ULONG PageProtection,
+    _Inout_updates_opt_(ExtendedParameterCount) PMEM_EXTENDED_PARAMETER ExtendedParameters,
+    _In_ ULONG ExtendedParameterCount
     );
 
 typedef NTSTATUS(NTAPI* NtProtectVirtualMemory)(
@@ -59,11 +89,11 @@ typedef NTSTATUS(NTAPI* NtProtectVirtualMemory)(
     );
 
 typedef NTSTATUS(NTAPI* NtWriteVirtualMemory)(
-    HANDLE ProcessHandle,
-    PVOID BaseAddress,
-    PVOID Buffer,
-    SIZE_T NumberOfBytesToWrite,
-    PSIZE_T NumberOfBytesWritten
+    _In_ HANDLE ProcessHandle,
+    _In_opt_ PVOID BaseAddress,
+    _In_reads_bytes_(NumberOfBytesToWrite) PVOID Buffer,
+    _In_ SIZE_T NumberOfBytesToWrite,
+    _Out_opt_ PSIZE_T NumberOfBytesWritten
     );
 
 typedef _Function_class_(USER_THREAD_START_ROUTINE)
@@ -80,12 +110,30 @@ typedef NTSTATUS(NTAPI* NtCreateThreadEx)(
     ACCESS_MASK DesiredAccess,
     PCOBJECT_ATTRIBUTES ObjectAttributes,
     HANDLE ProcessHandle,
-    PUSER_THREAD_START_ROUTINE StartRoutine,
+    IN PVOID lpStartAddress,
     PVOID Argument,
-    ULONG CreateFlags, // THREAD_CREATE_FLAGS_*
+    ULONG CreateFlags, 
     SIZE_T ZeroBits,
     SIZE_T StackSize,
     SIZE_T MaximumStackSize,
     PPS_ATTRIBUTE_LIST AttributeList
+    );
+
+typedef NTSTATUS(NTAPI* NtOpenProcess)(
+    _Out_ PHANDLE ProcessHandle,
+    _In_ ACCESS_MASK DesiredAccess,
+    _In_ PCOBJECT_ATTRIBUTES ObjectAttributes,
+    _In_opt_ PCLIENT_ID ClientId
+    );
+
+typedef NTSTATUS(NTAPI* NtCreateThread)(
+    _Out_ PHANDLE ThreadHandle,
+    _In_ ACCESS_MASK DesiredAccess,
+    _In_opt_ PCOBJECT_ATTRIBUTES ObjectAttributes,
+    _In_ HANDLE ProcessHandle,
+    _Out_ PCLIENT_ID ClientId,
+    _In_ PCONTEXT ThreadContext,
+    _In_ PINITIAL_TEB InitialTeb,
+    _In_ BOOLEAN CreateSuspended
     );
 

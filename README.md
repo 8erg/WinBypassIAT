@@ -10,6 +10,6 @@ I want to be able to inject my `Sliver C2` stager without being detected by Wind
 + [ x ] Build a custom GetProcAddress
 + [ x ] Identify API Calls that I need (NtAllocateVirtualMemory, NtProtectVirtualMemory, NtWriteVirtualMemory, NtCreateThreadEx)
 + [ x ] Build a custom GetModuleHandle
-+ [ ] Implement API Hashing
-+ [ ] Perform an injection
++ [ x ] Implement API Hashing
++ [ x ] Perform an injection
 + [ ] Transform into a DLL Sideloading

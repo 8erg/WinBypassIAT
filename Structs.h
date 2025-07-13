@@ -92,7 +92,7 @@ typedef struct _PEB
             ULONG ProcessUsingFTH : 1;
             ULONG ProcessPreviouslyThrottled : 1;
             ULONG ProcessCurrentlyThrottled : 1;
-            ULONG ProcessImagesHotPatched : 1; // REDSTONE5
+            ULONG ProcessImagesHotPatched : 1; 
             ULONG ReservedBits0 : 24;
         };
     };
@@ -109,12 +109,12 @@ typedef struct _PEB
     ULONG TlsBitmapBits[2];
 
     PVOID ReadOnlySharedMemoryBase;
-    PVOID SharedData; // HotpatchInformation
+    PVOID SharedData; 
     PVOID* ReadOnlyStaticServerData;
 
-    PVOID AnsiCodePageData; // PCPTABLEINFO
-    PVOID OemCodePageData; // PCPTABLEINFO
-    PVOID UnicodeCaseTableData; // PNLSTABLEINFO
+    PVOID AnsiCodePageData; 
+    PVOID OemCodePageData; 
+    PVOID UnicodeCaseTableData; 
 
     ULONG NumberOfProcessors;
     ULONG NtGlobalFlag;
@@ -127,7 +127,7 @@ typedef struct _PEB
 
     ULONG NumberOfHeaps;
     ULONG MaximumNumberOfHeaps;
-    PVOID* ProcessHeaps; // PHEAP
+    PVOID* ProcessHeaps; 
 
     PVOID GdiSharedHandleTable;
     PVOID ProcessStarterHelper;
@@ -155,20 +155,20 @@ typedef struct _PEB
     ULARGE_INTEGER AppCompatFlags;
     ULARGE_INTEGER AppCompatFlagsUser;
     PVOID pShimData;
-    PVOID AppCompatInfo; // APPCOMPAT_EXE_DATA
+    PVOID AppCompatInfo; 
 
     UNICODE_STRING CSDVersion;
 
-    PVOID ActivationContextData; // ACTIVATION_CONTEXT_DATA
-    PVOID ProcessAssemblyStorageMap; // ASSEMBLY_STORAGE_MAP
-    PVOID SystemDefaultActivationContextData; // ACTIVATION_CONTEXT_DATA
-    PVOID SystemAssemblyStorageMap; // ASSEMBLY_STORAGE_MAP
+    PVOID ActivationContextData; 
+    PVOID ProcessAssemblyStorageMap; 
+    PVOID SystemDefaultActivationContextData; 
+    PVOID SystemAssemblyStorageMap; 
 
     SIZE_T MinimumStackCommit;
 
-    PVOID SparePointers[2]; // 19H1 (previously FlsCallback to FlsHighIndex)
+    PVOID SparePointers[2]; 
     PVOID PatchLoaderData;
-    PVOID ChpeV2ProcessInfo; // _CHPEV2_PROCESS_INFO
+    PVOID ChpeV2ProcessInfo; 
 
     ULONG AppModelFeatureState;
     ULONG SpareUlongs[2];
@@ -183,9 +183,9 @@ typedef struct _PEB
 
     union
     {
-        PVOID pContextData; // WIN7
-        PVOID pUnused; // WIN10
-        PVOID EcCodeBitMap; // WIN11
+        PVOID pContextData; 
+        PVOID pUnused; 
+        PVOID EcCodeBitMap; 
     };
 
     PVOID pImageHeaderHash;
@@ -204,12 +204,12 @@ typedef struct _PEB
     PRTL_CRITICAL_SECTION TppWorkerpListLock;
     LIST_ENTRY TppWorkerpList;
     PVOID WaitOnAddressHashTable[128];
-    PVOID TelemetryCoverageHeader; // REDSTONE3
+    PVOID TelemetryCoverageHeader; 
     ULONG CloudFileFlags;
-    ULONG CloudFileDiagFlags; // REDSTONE4
+    ULONG CloudFileDiagFlags; 
     CHAR PlaceholderCompatibilityMode;
     CHAR PlaceholderCompatibilityModeReserved[7];
-    struct _LEAP_SECOND_DATA* LeapSecondData; // REDSTONE5
+    struct _LEAP_SECOND_DATA* LeapSecondData; 
     union
     {
         ULONG LeapSecondFlags;
@@ -220,7 +220,7 @@ typedef struct _PEB
         };
     };
     ULONG NtGlobalFlag2;
-    ULONGLONG ExtendedFeatureDisableMask; // since WIN11
+    ULONGLONG ExtendedFeatureDisableMask;
 } PEB, * PPEB;
 
 

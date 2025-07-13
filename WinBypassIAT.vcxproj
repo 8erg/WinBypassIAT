@@ -130,6 +130,8 @@
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Hashing.h" />
+    <ClInclude Include="Library.h" />
     <ClInclude Include="NtSignatures.h" />
     <ClInclude Include="Structs.h" />
   </ItemGroup>
